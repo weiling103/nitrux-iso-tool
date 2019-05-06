@@ -1,8 +1,42 @@
 mkdir -p \
+	/root/isodevice/.overlay-tmp/bin.w\
+	/root/isodevice/.overlay-tmp/boot.w\
+	/root/isodevice/.overlay-tmp/dev.w\
 	/root/isodevice/.overlay-tmp/etc.w \
-	/root/isodevice/.overlay-tmp/home.w
+	/root/isodevice/.overlay-tmp/home.w \
+	/root/isodevice/.overlay-tmp/lib.w\
+	/root/isodevice/.overlay-tmp/lib64.w\
+	/root/isodevice/.overlay-tmp/lost+found.w\
+	/root/isodevice/.overlay-tmp/media.w\
+	/root/isodevice/.overlay-tmp/mnt.w\
+	/root/isodevice/.overlay-tmp/opt.w\
+	/root/isodevice/.overlay-tmp/proc.w\
+	/root/isodevice/.overlay-tmp/root.w\
+	/root/isodevice/.overlay-tmp/run.w\
+	/root/isodevice/.overlay-tmp/sbin.w\
+	/root/isodevice/.overlay-tmp/srv.w\
+	/root/isodevice/.overlay-tmp/sys.w\
+	/root/isodevice/.overlay-tmp/usr.w\
 
 mount -t overlay \
+	-o lowerdir=/root/bin \
+	-o upperdir=/root/isodevice/data/bin \
+	-o workdir=/root/isodevice/.overlay-tmp/bin.w \
+	. /root/bin
+
+mount -t overlay \
+	-o lowerdir=/root/boot \
+	-o upperdir=/root/isodevice/data/boot \
+	-o workdir=/root/isodevice/.overlay-tmp/boot.w \
+	. /root/boot
+
+mount -t overlay \
+	-o lowerdir=/root/dev \
+	-o upperdir=/root/isodevice/data/dev \
+	-o workdir=/root/isodevice/.overlay-tmp/dev.w \
+	. /root/dev
+
+	mount -t overlay \
 	-o lowerdir=/root/etc \
 	-o upperdir=/root/isodevice/data/etc \
 	-o workdir=/root/isodevice/.overlay-tmp/etc.w \
@@ -13,3 +47,87 @@ mount -t overlay \
 	-o upperdir=/root/isodevice/data/home \
 	-o workdir=/root/isodevice/.overlay-tmp/home.w \
 	. /root/home
+
+mount -t overlay \
+	-o lowerdir=/root/lib \
+	-o upperdir=/root/isodevice/data/lib \
+	-o workdir=/root/isodevice/.overlay-tmp/lib.w \
+	. /root/lib
+
+mount -t overlay \
+	-o lowerdir=/root/lib64 \
+	-o upperdir=/root/isodevice/data/lib64 \
+	-o workdir=/root/isodevice/.overlay-tmp/lib64.w \
+	. /root/lib64
+
+mount -t overlay \
+	-o lowerdir=/root/lost+found \
+	-o upperdir=/root/isodevice/data/lost+found \
+	-o workdir=/root/isodevice/.overlay-tmp/lost+found.w \
+	. /root/lost+found
+
+mount -t overlay \
+	-o lowerdir=/root/media \
+	-o upperdir=/root/isodevice/data/media \
+	-o workdir=/root/isodevice/.overlay-tmp/media.w \
+	. /root/media
+
+mount -t overlay \
+	-o lowerdir=/root/mnt \
+	-o upperdir=/root/isodevice/data/mnt \
+	-o workdir=/root/isodevice/.overlay-tmp/mnt.w \
+	. /root/mnt
+
+mount -t overlay \
+	-o lowerdir=/root/opt \
+	-o upperdir=/root/isodevice/data/opt \
+	-o workdir=/root/isodevice/.overlay-tmp/opt.w \
+	. /root/opt
+
+mount -t overlay \
+	-o lowerdir=/root/proc \
+	-o upperdir=/root/isodevice/data/proc \
+	-o workdir=/root/isodevice/.overlay-tmp/proc.w \
+	. /root/proc
+
+mount -t overlay \
+	-o lowerdir=/root/root \
+	-o upperdir=/root/isodevice/data/root \
+	-o workdir=/root/isodevice/.overlay-tmp/root.w \
+	. /root/root
+
+mount -t overlay \
+	-o lowerdir=/root/run \
+	-o upperdir=/root/isodevice/data/run \
+	-o workdir=/root/isodevice/.overlay-tmp/run.w \
+	. /root/run
+
+mount -t overlay \
+	-o lowerdir=/root/sbin \
+	-o upperdir=/root/isodevice/data/sbin \
+	-o workdir=/root/isodevice/.overlay-tmp/sbin.w \
+	. /root/sbin
+
+mount -t overlay \
+	-o lowerdir=/root/srv \
+	-o upperdir=/root/isodevice/data/srv \
+	-o workdir=/root/isodevice/.overlay-tmp/srv.w \
+	. /root/srv
+
+mount -t overlay \
+	-o lowerdir=/root/sys \
+	-o upperdir=/root/isodevice/data/sys \
+	-o workdir=/root/isodevice/.overlay-tmp/sys.w \
+	. /root/sys
+
+mount -t overlay \
+	-o lowerdir=/root/usr \
+	-o upperdir=/root/isodevice/data/usr \
+	-o workdir=/root/isodevice/.overlay-tmp/usr.w \
+	. /root/usr
+
+mount -t overlay \
+	-o lowerdir=/root/var \
+	-o upperdir=/root/isodevice/data/var \
+	-o workdir=/root/isodevice/.overlay-tmp/var.w \
+	. /root/var

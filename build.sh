@@ -16,7 +16,7 @@ CONFIG_DIR=$PWD/configs
 
 # -- The name of the ISO image.
 
-IMAGE=nitrux_release_$(printf $TRAVIS_BRANCH | sed 's/master/stable/')
+IMAGE=elementary_znx_$(printf $TRAVIS_BRANCH | sed 's/master/stable/')
 
 
 # -- Prepare the directory where the filesystem will be created.
@@ -63,14 +63,14 @@ printf "${TRAVIS_COMMIT:0:7}" > $ISO_DIR/.git-commit
 wget -qO /bin/mkiso https://raw.githubusercontent.com/Nitrux/mkiso/7f171c70b0ee26872afc732fec94518223777f36/mkiso
 chmod +x /bin/mkiso
 
-git clone https://github.com/Nitrux/nitrux-grub-theme grub-theme
+git clone https://github.com/UriHerrera/storage/tree/master/elementary-grub-theme grub-theme
 
 mkiso \
 	-d $ISO_DIR \
-	-V "NITRUX" \
+	-V "elementary" \
 	-g $CONFIG_DIR/grub.cfg \
 	-g $CONFIG_DIR/loopback.cfg \
-	-t grub-theme/nomad \
+	-t grub-theme/elementary \
 	-o $OUTPUT_DIR/$IMAGE
 
 
