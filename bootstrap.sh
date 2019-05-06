@@ -39,7 +39,7 @@ cp /configs/sources.list /etc/apt/sources.list
 
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
-apt -yy install ${PACKAGES//\\n/ } --no-install-recommends > /dev/null
+apt -yy install ${PACKAGES//\\n/ } --no-install-recommends 
 
 
 # -- Add znx.
