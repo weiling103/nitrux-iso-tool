@@ -47,10 +47,10 @@ apt -yy -qq install ${PACKAGES//\\n/ } > /dev/null
 printf "INSTALLING NEW KERNEL."
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-headers-4.19.39-041939_4.19.39-041939.201905040435_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-headers-4.19.39-041939-generic_4.19.39-041939.201905040435_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-image-unsigned-4.19.39-041939-generic_4.19.39-041939.201905040435_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-modules-4.19.39-041939-generic_4.19.39-041939.201905040435_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-headers-5.1.0-050100_5.1.0-050100.201905052130_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-headers-5.1.0-050100-generic_5.1.0-050100.201905052130_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-image-unsigned-5.1.0-050100-generic_5.1.0-050100.201905052130_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-modules-5.1.0-050100-generic_5.1.0-050100.201905052130_amd64.deb
 '
 
 mkdir latest_kernel
