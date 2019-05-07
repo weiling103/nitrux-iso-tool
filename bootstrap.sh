@@ -47,13 +47,10 @@ apt -yy -qq install ${PACKAGES//\\n/ } > /dev/null
 printf "INSTALLING NEW KERNEL."
 
 kfiles='
-http://mirrors.kernel.org/ubuntu/pool/main/l/linux-firmware/linux-firmware_1.173.5_all.deb
-http://mirrors.kernel.org/ubuntu/pool/main/l/linux-signed/linux-image-4.15.0-48-generic_4.15.0-48.51_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/l/linux/linux-modules-4.15.0-48-generic_4.15.0-48.51_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/l/linux/linux-modules-extra-4.15.0-48-generic_4.15.0-48.51_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/a/amd64-microcode/amd64-microcode_3.20180524.1~ubuntu0.18.04.2_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/i/intel-microcode/intel-microcode_3.20180807a.0ubuntu0.18.04.1_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/i/iucode-tool/iucode-tool_2.3.1-1_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-headers-4.19.39-041939_4.19.39-041939.201905040435_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-headers-4.19.39-041939-generic_4.19.39-041939.201905040435_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-image-unsigned-4.19.39-041939-generic_4.19.39-041939.201905040435_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.19.39/linux-modules-4.19.39-041939-generic_4.19.39-041939.201905040435_amd64.deb
 '
 
 mkdir latest_kernel
