@@ -53,6 +53,7 @@ http://mirrors.kernel.org/ubuntu/pool/main/l/linux/linux-modules-4.15.0-48-gener
 http://mirrors.kernel.org/ubuntu/pool/main/l/linux/linux-modules-extra-4.15.0-48-generic_4.15.0-48.51_amd64.deb
 http://mirrors.kernel.org/ubuntu/pool/main/a/amd64-microcode/amd64-microcode_3.20180524.1~ubuntu0.18.04.2_amd64.deb
 http://mirrors.kernel.org/ubuntu/pool/main/i/intel-microcode/intel-microcode_3.20180807a.0ubuntu0.18.04.1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/i/iucode-tool/iucode-tool_2.3.1-1_amd64.deb
 '
 
 mkdir latest_kernel
