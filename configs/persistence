@@ -1,22 +1,22 @@
 mkdir -p \
-	/root/isodevice/.overlay-tmp/bin.w\
-	/root/isodevice/.overlay-tmp/boot.w\
-	/root/isodevice/.overlay-tmp/dev.w\
+	/root/isodevice/.overlay-tmp/bin.w \
+	/root/isodevice/.overlay-tmp/boot.w \
+	/root/isodevice/.overlay-tmp/dev.w \
 	/root/isodevice/.overlay-tmp/etc.w \
 	/root/isodevice/.overlay-tmp/home.w \
-	/root/isodevice/.overlay-tmp/lib.w\
-	/root/isodevice/.overlay-tmp/lib64.w\
-	/root/isodevice/.overlay-tmp/lost+found.w\
-	/root/isodevice/.overlay-tmp/media.w\
-	/root/isodevice/.overlay-tmp/mnt.w\
-	/root/isodevice/.overlay-tmp/opt.w\
-	/root/isodevice/.overlay-tmp/proc.w\
-	/root/isodevice/.overlay-tmp/root.w\
-	/root/isodevice/.overlay-tmp/run.w\
-	/root/isodevice/.overlay-tmp/sbin.w\
-	/root/isodevice/.overlay-tmp/srv.w\
-	/root/isodevice/.overlay-tmp/sys.w\
-	/root/isodevice/.overlay-tmp/usr.w\
+	/root/isodevice/.overlay-tmp/lib.w \
+	/root/isodevice/.overlay-tmp/lib64.w \
+	/root/isodevice/.overlay-tmp/lost+found.w \
+	/root/isodevice/.overlay-tmp/media.w \
+	/root/isodevice/.overlay-tmp/mnt.w \
+	/root/isodevice/.overlay-tmp/opt.w \
+	/root/isodevice/.overlay-tmp/proc.w \
+	/root/isodevice/.overlay-tmp/root.w \
+	/root/isodevice/.overlay-tmp/run.w \
+	/root/isodevice/.overlay-tmp/sbin.w \
+	/root/isodevice/.overlay-tmp/srv.w \
+	/root/isodevice/.overlay-tmp/sys.w \
+	/root/isodevice/.overlay-tmp/usr.w \
 
 mount -t overlay \
 	-o lowerdir=/root/bin \
