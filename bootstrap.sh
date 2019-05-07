@@ -28,6 +28,7 @@ apt -yy -qq install apt-transport-https wget ca-certificates gnupg2 apt-utils su
 # -- Add key for elementary repositories
 
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E1F8A59 > /dev/null
+	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FE70B91C > /dev/null
 
 
 # -- Use sources.list.build to build ISO.
@@ -39,39 +40,10 @@ cp /configs/sources.list /etc/apt/sources.list
 
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
-apt -yy install ${PACKAGES//\\n/ }
+apt -yy -qq install ${PACKAGES//\\n/ } > /dev/null
 
 
-# -- Add znx.
-
-APPS_SYS='
-https://github.com/Nitrux/znx/releases/download/continuous-development/znx_development
-'
-
-mkdir /Applications
-
-for x in $APPS_SYS; do
-	wget -q -P /Applications $x
-done
-
-chmod +x /Applications/*
-mkdir -p /etc/skel/Applications
-
-chmod +x /etc/skel/Applications/*
-mv /Applications/znx_development /Applications/znx
-
-# -- Add znx-gui.
-
-cp /configs/znx-gui.desktop /usr/share/applications
-wget -q -O /bin/znx-gui https://raw.githubusercontent.com/Nitrux/nitrux-iso-tool/development/configs/znx-gui
-chmod +x /bin/znx-gui
-
-
-# -- Add config for SDDM.
 # -- Add fix for https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1638842.
-# -- Add kservice menu item for Dolphin for AppImageUpdate.
-# -- Add custom launchers for Maui apps.
-# -- Add policykit file for KDialog.
 
 cp /configs/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
 
