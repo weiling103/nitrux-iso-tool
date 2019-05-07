@@ -22,7 +22,7 @@ elementary-desktop
 # -- Install basic packages.
 
 apt -qq update > /dev/null
-apt -yy -qq install apt-transport-https wget ca-certificates gnupg2 apt-utils sudo linux-image-generic --no-install-recommends > /dev/null
+apt -yy -qq install apt-transport-https wget ca-certificates gnupg2 apt-utils sudo --no-install-recommends > /dev/null
 
 
 # -- Add key for elementary repositories
@@ -41,6 +41,30 @@ cp /configs/sources.list /etc/apt/sources.list
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
 apt -yy -qq install ${PACKAGES//\\n/ } > /dev/null
+
+# -- Install the kernel.
+
+printf "INSTALLING NEW KERNEL."
+
+kfiles='
+http://mirrors.kernel.org/ubuntu/pool/main/l/linux-firmware/linux-firmware_1.173.5_all.deb
+http://mirrors.kernel.org/ubuntu/pool/main/l/linux-signed/linux-image-4.15.0-48-generic_4.15.0-48.51_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/l/linux/linux-modules-4.15.0-48-generic_4.15.0-48.51_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/l/linux/linux-modules-extra-4.15.0-48-generic_4.15.0-48.51_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/a/amd64-microcode/amd64-microcode_3.20180524.1~ubuntu0.18.04.2_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/i/intel-microcode/intel-microcode_3.20180807a.0ubuntu0.18.04.1_amd64.deb
+'
+
+mkdir latest_kernel
+
+for x in $kfiles; do
+	printf "$x"
+	wget -q -P latest_kernel $x
+done
+
+dpkg -iR latest_kernel > /dev/null
+rm -r latest_kernel
+
 
 
 # -- Add fix for https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1638842.
