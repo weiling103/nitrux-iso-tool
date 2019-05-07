@@ -16,7 +16,7 @@ CONFIG_DIR=$PWD/configs
 
 # -- The name of the ISO image.
 
-IMAGE=test_build$(printf $TRAVIS_BRANCH | sed 's/master/stable/')
+IMAGE=test_build_$(printf $TRAVIS_BRANCH | sed 's/master/stable/')
 
 
 # -- Prepare the directory where the filesystem will be created.

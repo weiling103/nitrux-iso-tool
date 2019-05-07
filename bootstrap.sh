@@ -67,7 +67,6 @@ dpkg -iR latest_kernel > /dev/null
 rm -r latest_kernel
 
 
-
 # -- Add fix for https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1638842.
 
 cp /configs/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
