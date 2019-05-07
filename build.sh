@@ -63,7 +63,7 @@ printf "${TRAVIS_COMMIT:0:7}" > $ISO_DIR/.git-commit
 wget -qO /bin/mkiso https://raw.githubusercontent.com/Nitrux/mkiso/7f171c70b0ee26872afc732fec94518223777f36/mkiso
 chmod +x /bin/mkiso
 
-git clone https://github.com/UriHerrera/storage/tree/master/elementary-grub-theme grub-theme
+git clone https://github.com/UriHerrera/elementary-grub-theme grub-theme
 
 mkiso \
 	-d $ISO_DIR \
