@@ -22,7 +22,7 @@ elementary-desktop
 # -- Install basic packages.
 
 apt -qq update > /dev/null
-apt -yy -qq install apt-transport-https wget ca-certificates gnupg2 apt-utils --no-install-recommends > /dev/null
+apt -yy -qq install apt-transport-https wget ca-certificates gnupg2 apt-utils sudo --no-install-recommends > /dev/null
 
 
 # -- Add key for elementary repositories
@@ -40,7 +40,6 @@ cp /configs/sources.list /etc/apt/sources.list
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
 apt -yy install ${PACKAGES//\\n/ }
-apt install -f
 
 
 # -- Add znx.
