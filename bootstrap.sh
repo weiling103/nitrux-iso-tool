@@ -40,6 +40,7 @@ cp /configs/sources.list /etc/apt/sources.list
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
 apt -yy install ${PACKAGES//\\n/ }
+apt install -f
 
 
 # -- Add znx.
@@ -87,7 +88,3 @@ update-initramfs -u
 apt -yy -qq purge --remove casper lupin-casper > /dev/null
 apt -yy -qq autoremove > /dev/null
 apt -yy -qq clean > /dev/null
-
-# -- Use sources.list.nitrux for release.
-
-/bin/cp /configs/sources.list.nitrux /etc/apt/sources.list
