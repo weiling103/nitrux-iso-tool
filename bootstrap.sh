@@ -42,6 +42,28 @@ apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
 apt -yy -qq install ${PACKAGES//\\n/ } > /dev/null
 
+# -- Install the latest LTS kernel.
+
+printf "INSTALLING NEW KERNEL."
+
+kfiles='
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-headers-5.1.0-050100_5.1.0-050100.201905052130_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-headers-5.1.0-050100-generic_5.1.0-050100.201905052130_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-image-unsigned-5.1.0-050100-generic_5.1.0-050100.201905052130_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.1/linux-modules-5.1.0-050100-generic_5.1.0-050100.201905052130_amd64.deb
+'
+
+mkdir latest_kernel
+
+for x in $kfiles; do
+	printf "$x"
+	wget -q -P latest_kernel $x
+done
+
+dpkg -iR latest_kernel > /dev/null
+rm -r latest_kernel
+
+
 
 # -- Add fix for https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1638842.
 
