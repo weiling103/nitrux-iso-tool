@@ -71,6 +71,8 @@ cp /configs/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
 
 # -- Update the initramfs.
 
+cp /configs/initramfs.conf /etc/initramfs-tools/
+
 cat /configs/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
 update-initramfs -u
 
