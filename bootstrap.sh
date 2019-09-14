@@ -16,25 +16,37 @@ printf "\n"
 
 BASIC_PACKAGES='
 apt-transport-https 
-wget 
+apt-utils 
 ca-certificates 
-gnupg2 apt-utils sudo
+casper
+cifs-utils
+dhcpcd5
+fuse
+gnupg2 
+localechooser-data
+lupin-casper
+phonon4qt5
+phonon4qt5-backend-vlc
+sudo
+user-setup
+wget 
+xz-utils
 '
 
 apt -qq update > /dev/null
 apt -yy -qq install ${BASIC_PACKAGES//\\n/ } > /dev/null
 
 
-# -- Add key for elementary repositories
+# -- Add key for KDE Neon repositories
 
 printf "\n"
 printf "ADD REPOSITORY KEYS."
 printf "\n"
 
 wget -q https://archive.neon.kde.org/public.key -O neon.key
-printf "ee86878b3be00f5c99da50974ee7c5141a163d0e00fccb889398f1a33e112584 neon.key" | sha256sum -c &&
-apt-key add neon.key > /dev/null
-rm neon.key
+	printf "ee86878b3be00f5c99da50974ee7c5141a163d0e00fccb889398f1a33e112584 neon.key" | sha256sum -c &&
+	apt-key add neon.key > /dev/null
+	rm neon.key
 
 
 # -- Use sources.list.build to build ISO.
@@ -49,19 +61,12 @@ printf "INSTALLING DESKTOP."
 printf "\n"
 
 DESKTOP_PACKAGES='
-dhcpcd5
-user-setup
-localechooser-data
-cifs-utils
-casper
-lupin-casper
-xz-utils
 neon-desktop
 '
 
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
-apt -yy -qq install ${DESKTOP_PACKAGES//\\n/ } > /dev/null
+apt -yy -qq install ${DESKTOP_PACKAGES//\\n/ }
 
 
 # -- Install the kernel.
