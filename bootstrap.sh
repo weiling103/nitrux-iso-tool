@@ -31,9 +31,10 @@ printf "\n"
 printf "ADD REPOSITORY KEYS."
 printf "\n"
 
-
-	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E1F8A59 > /dev/null
-	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FE70B91C > /dev/null
+wget -q https://archive.neon.kde.org/public.key -O neon.key
+printf "ee86878b3be00f5c99da50974ee7c5141a163d0e00fccb889398f1a33e112584 neon.key" | sha256sum -c &&
+apt-key add neon.key > /dev/null
+rm neon.key
 
 
 # -- Use sources.list.build to build ISO.
@@ -55,13 +56,13 @@ cifs-utils
 casper
 lupin-casper
 xz-utils
-elementary-desktop
+neon-desktop
 '
 
 apt -qq update > /dev/null
 apt -yy -qq upgrade > /dev/null
 apt -yy -qq install ${DESKTOP_PACKAGES//\\n/ } > /dev/null
-apt -yy -qq purge --remove gnome-software > /dev/null
+
 
 # -- Install the kernel.
 
@@ -70,9 +71,10 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15/linux-headers-4.15.0-041500_4.15.0-041500.201802011154_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15/linux-headers-4.15.0-041500-generic_4.15.0-041500.201802011154_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15/linux-image-4.15.0-041500-generic_4.15.0-041500.201802011154_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-headers-5.0.21-050021_5.0.21-050021.201906040731_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-headers-5.0.21-050021-generic_5.0.21-050021.201906040731_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-image-unsigned-5.0.21-050021-generic_5.0.21-050021.201906040731_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-modules-5.0.21-050021-generic_5.0.21-050021.201906040731_amd64.deb
 '
 
 mkdir latest_kernel

@@ -67,14 +67,14 @@ printf "\n" >> $ISO_DIR/.INFO
 wget -qO /bin/mkiso https://raw.githubusercontent.com/Nitrux/mkiso/7f171c70b0ee26872afc732fec94518223777f36/mkiso
 chmod +x /bin/mkiso
 
-git clone https://github.com/UriHerrera/elementary-grub-theme grub-theme
+git clone https://github.com/UriHerrera/breeze-grub-theme grub-theme
 
 mkiso \
 	-d $ISO_DIR \
-	-V "elementary" \
+	-V "Breeze" \
 	-g $CONFIG_DIR/grub.cfg \
 	-g $CONFIG_DIR/loopback.cfg \
-	-t grub-theme/elementary \
+	-t grub-theme/Breeze \
 	-o $OUTPUT_DIR/$IMAGE
 
 
