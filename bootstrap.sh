@@ -33,8 +33,8 @@ wget
 xz-utils
 '
 
-apt -qq update > /dev/null
-apt -yy -qq install ${BASIC_PACKAGES//\\n/ } > /dev/null
+apt -qq update
+apt -yy install ${BASIC_PACKAGES//\\n/ }
 
 
 # -- Add key for KDE Neon repositories
@@ -64,9 +64,9 @@ DESKTOP_PACKAGES='
 neon-desktop
 '
 
-apt -qq update > /dev/null
-apt -yy -qq upgrade > /dev/null
-apt -yy -qq install ${DESKTOP_PACKAGES//\\n/ }
+apt -qq update
+apt -yy upgrade
+apt -yy install ${DESKTOP_PACKAGES//\\n/ }
 
 
 # -- Install the kernel.
