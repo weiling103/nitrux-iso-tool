@@ -58,9 +58,9 @@ xz-utils
 elementary-desktop
 '
 
-apt -qq update > /dev/null
-apt -yy -qq upgrade > /dev/null
-apt -yy -qq install ${DESKTOP_PACKAGES//\\n/ } > /dev/null
+apt -qq update
+apt -yy -qq upgrade
+apt -yy -qq install ${DESKTOP_PACKAGES//\\n/ }
 apt -yy -qq purge --remove gnome-software > /dev/null
 
 # -- Install the kernel.
