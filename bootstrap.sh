@@ -24,7 +24,7 @@ gnupg2 apt-utils sudo
 '
 
 apt -qq update > /dev/null
-apt -yy -qq install ${BASIC_PACKAGES//\\n/ } > /dev/null
+apt -yy install ${BASIC_PACKAGES//\\n/ } > /dev/null
 
 
 # -- Add key for elementary repositories
