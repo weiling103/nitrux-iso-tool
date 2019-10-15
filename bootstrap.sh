@@ -76,10 +76,9 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-headers-5.0.21-050021_5.0.21-050021.201906040731_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-headers-5.0.21-050021-generic_5.0.21-050021.201906040731_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-image-unsigned-5.0.21-050021-generic_5.0.21-050021.201906040731_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.0.21/linux-modules-5.0.21-050021-generic_5.0.21-050021.201906040731_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15/linux-headers-4.15.0-041500_4.15.0-041500.201802011154_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15/linux-headers-4.15.0-041500-generic_4.15.0-041500.201802011154_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15/linux-image-4.15.0-041500-generic_4.15.0-041500.201802011154_amd64.deb
 '
 
 mkdir latest_kernel
@@ -109,8 +108,9 @@ printf "UPDATE INITRAMFS."
 printf "\n"
 
 cp /configs/initramfs.conf /etc/initramfs-tools/
-
 cat /configs/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
+cp /configs/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
+
 update-initramfs -u
 
 
