@@ -104,8 +104,9 @@ printf "UPDATE INITRAMFS."
 printf "\n"
 
 cp /configs/initramfs.conf /etc/initramfs-tools/
-
 cat /configs/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
+cp /configs/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
+
 update-initramfs -u
 
 
