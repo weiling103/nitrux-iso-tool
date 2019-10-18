@@ -31,6 +31,7 @@ sudo
 user-setup
 wget 
 xz-utils
+inetutils-ping
 '
 
 apt -qq update
@@ -67,6 +68,7 @@ neon-desktop
 apt -qq update
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ }
+apt -yy purge --remove gnome-terminal gnome-terminal-data nautilus-extension-gnome-terminal
 
 
 # -- Install the kernel.
