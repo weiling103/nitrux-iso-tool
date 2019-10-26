@@ -28,6 +28,7 @@ lupin-casper
 packagekit
 phonon4qt5
 phonon4qt5-backend-vlc
+policykit-1
 sudo
 user-setup
 wget 
