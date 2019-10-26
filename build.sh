@@ -100,7 +100,7 @@ mkiso \
 	-g $CONFIG_DIR/grub.cfg \
 	-g $CONFIG_DIR/loopback.cfg \
 	-t grub-theme/elementary \
-	-o $OUTPUT_DIR/$IMAGE
+	$ISO_DIR $OUTPUT_DIR/$IMAGE
 
 
 # -- Embed the update information in the image.
