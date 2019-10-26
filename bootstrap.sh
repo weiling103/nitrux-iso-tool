@@ -57,6 +57,7 @@ elementary-desktop
 localechooser-data
 lupin-casper
 packagekit
+policykit-1
 user-setup
 xz-utils
 '
@@ -64,7 +65,7 @@ xz-utils
 apt -qq update
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ }
-apt -yy -qq purge --remove gnome-software > /dev/null
+apt -yy -qq purge --remove gnome-software
 
 # -- Install the kernel.
 
