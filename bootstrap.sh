@@ -17,10 +17,10 @@ printf "INSTALLING BASIC PACKAGES."
 printf "\n"
 
 BASIC_PACKAGES='
-apt-transport-https 
-wget 
-ca-certificates 
+apt-transport-https
+ca-certificates
 gnupg2 apt-utils sudo
+wget
 '
 
 apt -qq update > /dev/null
@@ -50,14 +50,15 @@ printf "INSTALLING DESKTOP."
 printf "\n"
 
 DESKTOP_PACKAGES='
-dhcpcd5
-user-setup
-localechooser-data
-cifs-utils
 casper
-lupin-casper
-xz-utils
+cifs-utils
+dhcpcd5
 elementary-desktop
+localechooser-data
+lupin-casper
+packagekit
+user-setup
+xz-utils
 '
 
 apt -qq update
