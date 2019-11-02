@@ -15,15 +15,19 @@ printf "INSTALLING BASIC PACKAGES."
 printf "\n"
 
 BASIC_PACKAGES='
-apt-transport-https 
-apt-utils 
-ca-certificates 
+apt-transport-https
+apt-utils
+ca-certificates
 casper
 cifs-utils
 dhcpcd5
 fuse
-gnupg2 
+gnupg2
+inetutils-ping
+language-pack-en
+language-pack-en-base
 localechooser-data
+locales
 lupin-casper
 packagekit
 phonon4qt5
@@ -31,13 +35,12 @@ phonon4qt5-backend-vlc
 policykit-1
 sudo
 user-setup
-wget 
+wget
 xz-utils
-inetutils-ping
 '
 
-apt -qq update
-apt -yy install ${BASIC_PACKAGES//\\n/ }
+apt update &> /dev/null
+apt -yy install ${BASIC_PACKAGES//\\n/ } --no-install-recommends
 
 
 # -- Add key for KDE Neon repositories
@@ -54,7 +57,7 @@ wget -q https://archive.neon.kde.org/public.key -O neon.key
 
 # -- Use sources.list.build to build ISO.
 
-cp /configs/sources.list /etc/apt/sources.list
+cp /configs/files/sources.list /etc/apt/sources.list
 
 
 # -- Update packages list and install packages. Install desktop packages.
@@ -67,10 +70,12 @@ DESKTOP_PACKAGES='
 neon-desktop
 '
 
-apt -qq update
+apt update &> /dev/null
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ }
 apt -yy purge --remove gnome-terminal gnome-terminal-data nautilus-extension-gnome-terminal
+apt clean &> /dev/null
+apt autoclean &> /dev/null
 
 
 # -- Install the kernel.
@@ -80,10 +85,10 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.7/linux-headers-5.3.7-050307_5.3.7-050307.201910180652_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.7/linux-headers-5.3.7-050307-generic_5.3.7-050307.201910180652_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.7/linux-image-unsigned-5.3.7-050307-generic_5.3.7-050307.201910180652_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.7/linux-modules-5.3.7-050307-generic_5.3.7-050307.201910180652_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.8/linux-headers-5.3.8-050308_5.3.8-050308.201910290940_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.8/linux-headers-5.3.8-050308-generic_5.3.8-050308.201910290940_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.8/linux-image-unsigned-5.3.8-050308-generic_5.3.8-050308.201910290940_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.8/linux-modules-5.3.8-050308-generic_5.3.8-050308.201910290940_amd64.deb
 '
 
 mkdir latest_kernel
@@ -93,7 +98,7 @@ for x in $kfiles; do
 	wget -q -P latest_kernel $x
 done
 
-dpkg -iR latest_kernel > /dev/null
+dpkg -iR latest_kernel &> /dev/null
 rm -r latest_kernel
 
 
@@ -103,7 +108,7 @@ printf "\n"
 printf "ADD MISC. FIXES."
 printf "\n"
 
-cp /configs/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
+cp /configs/files/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
 
 
 # -- Update the initramfs.
@@ -112,9 +117,9 @@ printf "\n"
 printf "UPDATE INITRAMFS."
 printf "\n"
 
-cp /configs/initramfs.conf /etc/initramfs-tools/
-cat /configs/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
-# cp /configs/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
+cp /configs/files/initramfs.conf /etc/initramfs-tools/
+cat /configs/files/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
+# cp /configs/files/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
 
 update-initramfs -u
 
@@ -125,9 +130,12 @@ printf "\n"
 printf "REMOVE CASPER."
 printf "\n"
 
-apt -yy -qq purge --remove casper lupin-casper > /dev/null
-apt -yy -qq autoremove > /dev/null
-apt -yy -qq clean > /dev/null
+REMOVE_PACKAGES='
+casper
+lupin-casper
+'
+
+/usr/bin/dpkg --remove --no-triggers --force-remove-essential --force-bad-path ${REMOVE_PACKAGES//\\n/ }
 
 
 printf "\n"
