@@ -26,7 +26,7 @@ wget
 '
 
 apt update &> /dev/null
-apt -yy install ${BASIC_PACKAGES//\\n/ }
+apt -yy install ${BASIC_PACKAGES//\\n/ } --no-install-recommends
 
 
 # -- Add key for elementary repositories
