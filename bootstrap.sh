@@ -20,9 +20,21 @@ BASIC_PACKAGES='
 apt-transport-https
 apt-utils
 ca-certificates
+casper
+cifs-utils
+dhcpcd5
 gnupg2
+language-pack-en
+language-pack-en-base
+localechooser-data
+locales
+lupin-casper
+packagekit
+policykit-1
 sudo
+user-setup
 wget
+xz-utils
 '
 
 apt update &> /dev/null
@@ -52,25 +64,13 @@ printf "INSTALLING DESKTOP."
 printf "\n"
 
 DESKTOP_PACKAGES='
-casper
-cifs-utils
-dhcpcd5
 elementary-desktop
-language-pack-en
-language-pack-en-base
-localechooser-data
-locales
-lupin-casper
-packagekit
-policykit-1
-user-setup
-xz-utils
 '
 
-apt update &> /dev/null
+apt update
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ }
-apt -yy purge --remove gnome-software &> /dev/null
+apt -yy purge --remove gnome-software
 apt clean &> /dev/null
 apt autoclean &> /dev/null
 
@@ -114,7 +114,7 @@ printf "UPDATE INITRAMFS."
 printf "\n"
 
 cp /configs/files/initramfs.conf /etc/initramfs-tools/
-cat /configs/files/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
+cat /configs/scripts/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
 # cp /configs/files/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
 
 update-initramfs -u
@@ -131,7 +131,7 @@ casper
 lupin-casper
 '
 
-/usr/bin/dpkg --remove --no-triggers --force-remove-essential --force-bad-path ${REMOVE_PACKAGES//\\n/ } &> /dev/null
+/usr/bin/dpkg --remove --no-triggers --force-remove-essential --force-bad-path ${REMOVE_PACKAGES//\\n/ }
 
 
 printf "\n"
