@@ -97,8 +97,8 @@ git clone https://github.com/UriHerrera/breeze-grub-theme grub-theme
 
 mkiso \
 	-V "Breeze" \
-	-g $CONFIG_DIR/grub.cfg \
-	-g $CONFIG_DIR/loopback.cfg \
+	-g $CONFIG_DIR/files/grub.cfg \
+	-g $CONFIG_DIR/files/loopback.cfg \
 	-t grub-theme/Breeze \
 	$ISO_DIR $OUTPUT_DIR/$IMAGE
 

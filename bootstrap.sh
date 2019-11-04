@@ -73,7 +73,6 @@ neon-desktop
 apt update &> /dev/null
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ }
-apt -yy purge --remove gnome-terminal gnome-terminal-data nautilus-extension-gnome-terminal
 apt clean &> /dev/null
 apt autoclean &> /dev/null
 
@@ -118,8 +117,8 @@ printf "UPDATE INITRAMFS."
 printf "\n"
 
 cp /configs/files/initramfs.conf /etc/initramfs-tools/
-cat /configs/files/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
-# cp /configs/files/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
+cat /configs/scripts/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
+# cp /configs/scripts/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
 
 update-initramfs -u
 
