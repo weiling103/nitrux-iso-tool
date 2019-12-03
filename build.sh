@@ -77,7 +77,7 @@ cp $(echo $BUILD_DIR/initrd* | tr ' ' '\n' | sort | tail -n 1) $ISO_DIR/boot/ini
 (while :; do sleep 300; printf "."; done) &
 
 mkdir -p $ISO_DIR/casper
-mksquashfs $BUILD_DIR $ISO_DIR/casper/filesystem.squashfs -comp xz -Xdict-size 100% -no-progress -b 1M 
+mksquashfs $BUILD_DIR $ISO_DIR/casper/filesystem.squashfs -comp gzip -Xdict-size 100% -no-progress -b 16384
 
 
 # -- Write the commit hash that generated the image.
@@ -101,11 +101,6 @@ mkiso \
 	-g $CONFIG_DIR/files/loopback.cfg \
 	-t grub-theme/nitrux \
 	$ISO_DIR $OUTPUT_DIR/$IMAGE
-
-
-# -- Embed the update information in the image.
-
-printf "zsync|$UPDATE_URL" | dd of=$OUTPUT_DIR/$IMAGE bs=1 seek=33651 count=512 conv=notrunc
 
 
 # -- Calculate the checksum.
