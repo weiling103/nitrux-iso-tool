@@ -2,7 +2,7 @@
 
 # -- Exit on errors.
 
-set -e
+set -xe
 
 # -- Update xorriso and grub.
 
@@ -26,8 +26,8 @@ printf "$x"
     wget -q -P /latest_xorriso $x
 done
 
-dpkg -iR /latest_xorriso/ &> /dev/null
-dpkg --configure -a &> /dev/null
+dpkg -iR /latest_xorriso/
+dpkg --configure -a
 rm -r /latest_xorriso
 
 
@@ -42,8 +42,9 @@ CONFIG_DIR=$PWD/configs
 
 # -- The name of the ISO image.
 
-IMAGE=nitrux-$(printf $TRAVIS_BRANCH | sed 's/master/stable/')-amd64.iso
+IMAGE=test_build_$(printf $TRAVIS_BRANCH | sed 's/master/stable/')-amd64.iso
 UPDATE_URL=http://repo.nxos.org:8000/${IMAGE%.iso}.zsync
+HASH_URL=http://repo.nxos.org:8000/${IMAGE%.iso}.md5sum
 
 
 # -- Prepare the directory where the filesystem will be created.
@@ -80,12 +81,11 @@ mkdir -p $ISO_DIR/casper
 mksquashfs $BUILD_DIR $ISO_DIR/casper/filesystem.squashfs -comp gzip -no-progress -b 16384
 
 
-# -- Write the commit hash that generated the image.
+# -- Write relevant data to the image.
 
-printf "UPDATE_URL $UPDATE_URL" >> $ISO_DIR/.INFO
-printf "\n" >> $ISO_DIR/.INFO
-printf "VERSION ${TRAVIS_COMMIT:0:7}" >> $ISO_DIR/.INFO
-printf "\n" >> $ISO_DIR/.INFO
+echo "UPDATE_URL $UPDATE_URL" >> $ISO_DIR/.INFO
+echo "HASH_URL $HASH_URL" >> $ISO_DIR/.INFO
+echo "VERSION ${TRAVIS_COMMIT:0:7}" >> $ISO_DIR/.INFO
 
 
 # -- Generate the ISO image.
@@ -105,14 +105,14 @@ mkiso \
 
 # -- Calculate the checksum.
 
-sha256sum $OUTPUT_DIR/$IMAGE > $OUTPUT_DIR/${IMAGE%.iso}.sha256sum
+md5sum $OUTPUT_DIR/$IMAGE > $OUTPUT_DIR/${IMAGE%.iso}.md5sum
 
 
 # -- Generate the zsync file.
 
 zsyncmake \
 	$OUTPUT_DIR/$IMAGE \
-	-u ${UPDATE_URL/.zsync}.iso \
+	-u ${UPDATE_URL%.zsync}.iso \
 	-o $OUTPUT_DIR/${IMAGE%.iso}.zsync
 
 
