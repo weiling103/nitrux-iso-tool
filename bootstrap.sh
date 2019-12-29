@@ -67,7 +67,7 @@ printf "\n"
 DESKTOP_PACKAGES='
 nitrux-minimal
 nitrux-standard
-nitrux-hardware-drivers
+nitrux-hardware-drivers-minimal
 '
 
 apt update &> /dev/null
@@ -78,14 +78,28 @@ apt -yy purge --remove vlc &> /dev/null
 apt -yy dist-upgrade
 
 
-# -- Use sources.list.eoan to update packages
+# -- Use sources.list.focal to update packages and install brew.
 
 printf "\n"
-printf "UPDATE BASE PACKAGES."
+printf "UPDATE MISC. PACKAGES."
 printf "\n"
 
-cp /configs/sources.list.eoan /etc/apt/sources.list
-apt -qq update
+cp /configs/files/sources.list.eoan /etc/apt/sources.list
+
+ADD_BREW_PACKAGES='
+libc-dev-bin
+libc6-dev
+linux-libc-dev
+linuxbrew-wrapper
+'
+
+apt update &> /dev/null
+apt -yy install ${ADD_BREW_PACKAGES//\\n/ } --no-install-recommends
+apt clean &> /dev/null
+apt autoclean &> /dev/null
+
+
+cp /configs/files/sources.list.focal /etc/apt/sources.list
 
 UPGRADE_OS_PACKAGES='
 amd64-microcode
@@ -95,7 +109,6 @@ exfat-fuse
 exfat-utils
 go-mtpfs
 grub-common
-grub-efi-amd64
 grub-efi-amd64-bin
 grub-efi-amd64-signed
 grub2-common
@@ -117,7 +130,6 @@ mesa-vdpau-drivers
 mesa-vulkan-drivers
 openssh-client
 openssl
-openresolv
 ovmf
 seabios
 sudo
@@ -138,32 +150,28 @@ xserver-xorg-video-radeon
 xserver-xorg-video-vmware
 '
 
-ADD_BREW_PACKAGES='
-libc-dev-bin
-libc6-dev
-linux-libc-dev
-linuxbrew-wrapper
-'
 apt update &> /dev/null
 apt -yy install ${UPGRADE_OS_PACKAGES//\\n/ } --only-upgrade --no-install-recommends
-apt -yy install ${ADD_BREW_PACKAGES//\\n/ } --no-install-recommends
 apt -yy --fix-broken install
 apt clean &> /dev/null
 apt autoclean &> /dev/null
 
 
+# -- No apt usage past this point. -- #
+
+
 # -- Install the kernel.
+#FIXME This should be put in our repository.
 
 printf "\n"
 printf "INSTALLING KERNEL."
 printf "\n"
 
-
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-headers-5.3.13-050313_5.3.13-050313.201911240840_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-headers-5.3.13-050313-generic_5.3.13-050313.201911240840_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-image-unsigned-5.3.13-050313-generic_5.3.13-050313.201911240840_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-modules-5.3.13-050313-generic_5.3.13-050313.201911240840_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.18/linux-headers-5.3.18-050318_5.3.18-050318.201912181133_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.18/linux-headers-5.3.18-050318-generic_5.3.18-050318.201912181133_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.18/linux-image-unsigned-5.3.18-050318-generic_5.3.18-050318.201912181133_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.18/linux-modules-5.3.18-050318-generic_5.3.18-050318.201912181133_amd64.deb
 '
 
 mkdir /latest_kernel
@@ -176,9 +184,6 @@ done
 dpkg -iR /latest_kernel &> /dev/null
 dpkg --configure -a &> /dev/null
 rm -r /latest_kernel
-
-
-# -- No apt usage past this point. -- #
 
 
 # -- Add missing firmware modules.
@@ -253,26 +258,15 @@ for x in $APPS_SYS; do
 done
 
 chmod +x /Applications/*
-mkdir -p /etc/skel/Applications
-
-APPS_USR='
-'
-
-for x in $APPS_USR; do
-    wget -q -P /etc/skel/Applications $x
-done
-
-chmod +x /etc/skel/Applications/*
 
 mv /Applications/znx-master-x86_64.AppImage /Applications/znx
-mv /Applications/vmetal-free-amd64 /Applications/vmetal
 mv /Applications/appimage-cli-tool-x86_64.AppImage /Applications/app
+mv /Applications/vmetal-free-amd64 /Applications/vmetal
 
 ls -l /Applications
 
 
 # -- Add AppImage providers for appimage-cli-tool
-#FIXME These fixes should be included in a package.
 
 printf "\n"
 printf "ADD APPIMAGE PROVIDERS."
@@ -282,7 +276,6 @@ cp /configs/files/appimage-providers.yaml /etc/
 
 
 # -- Add fix for https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1638842.
-#FIXME These fixes should be included in a package.
 
 printf "\n"
 printf "ADD MISC. FIXES."
@@ -359,12 +352,20 @@ sed -i 's+DSHELL=/bin/bash+DSHELL=/bin/zsh+g' /etc/adduser.conf
 # -- Decrease timeout for systemd start and stop services.
 #FIXME This should be put in a package.
 
+printf "\n"
+printf "DECREASE TIMEOUT FOR SYSTEMD SERVICES."
+printf "\n"
+
 sed -i 's/#DefaultTimeoutStartSec=90s/DefaultTimeoutStartSec=5s/g' /etc/systemd/system.conf
 sed -i 's/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=5s/g' /etc/systemd/system.conf
 
 
 # -- Disable systemd services not deemed necessary.
 # -- use 'mask' to fully disable them.
+
+printf "\n"
+printf "DISABLE SYSTEMD SERVICES."
+printf "\n"
 
 systemctl mask avahi-daemon.service
 systemctl disable cupsd.service
@@ -384,7 +385,6 @@ sed -i 's/ACTION!="add", GOTO="libmtp_rules_end"/ACTION!="bind", ACTION!="add", 
 /bin/cp /configs/files/sources.list.nitrux /etc/apt/sources.list
 
 
-# -- Overwrite file so cupt doesn't complain.
 # -- Remove APT.
 # -- Update package index using cupt.
 #FIXME We probably need to provide our own cupt package which also does this.
@@ -402,22 +402,25 @@ apt-transport-https
 /usr/bin/dpkg --remove --no-triggers --force-remove-essential --force-bad-path ${REMOVE_APT//\\n/ } &> /dev/null
 
 
-# -- Use XZ compression when creating the ISO.
+# -- Strip kernel modules.
+# -- Use GZIP compression when creating the initramfs.
 # -- Add initramfs hook script.
 # -- Add the persistence and update the initramfs.
+# -- Add znx_dev_uuid parameter.
+#FIXME This should be put in a package.
 
 printf "\n"
 printf "UPDATE INITRAMFS."
 printf "\n"
 
-find /lib/modules/5.3.13-050313-generic/ -iname "*.ko" -exec strip --strip-unneeded {} \;	
+find /lib/modules/5.3.18-050318-generic/ -iname "*.ko" -exec strip --strip-unneeded {} \;
 cp /configs/files/initramfs.conf /etc/initramfs-tools/
-cp /configs/files/hook-scripts.sh /usr/share/initramfs-tools/hooks/
-cat /configs/files/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
-# cp /configs/files/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
+cp /configs/scripts/hook-scripts.sh /usr/share/initramfs-tools/hooks/
+cat /configs/scripts/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
+# cp /configs/scripts/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
 
 update-initramfs -u
-lsinitramfs /boot/initrd.img-5.3.13-050313-generic | grep vfio
+lsinitramfs /boot/initrd.img-5.3.18-050318-generic | grep vfio
 
 rm /bin/dummy.sh
 
