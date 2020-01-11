@@ -81,13 +81,6 @@ mkdir -p $ISO_DIR/casper
 mksquashfs $BUILD_DIR $ISO_DIR/casper/filesystem.squashfs -comp gzip -no-progress -b 65536
 
 
-# -- Write relevant data to the image.
-
-echo "UPDATE_URL $UPDATE_URL" >> $ISO_DIR/.INFO
-echo "HASH_URL $HASH_URL" >> $ISO_DIR/.INFO
-echo "VERSION ${TRAVIS_COMMIT:0:7}" >> $ISO_DIR/.INFO
-
-
 # -- Generate the ISO image.
 
 wget -qO /bin/mkiso https://raw.githubusercontent.com/Nitrux/tools/master/mkiso
@@ -97,6 +90,9 @@ git clone https://github.com/UriHerrera/breeze-grub-theme grub-theme
 
 mkiso \
 	-V "Breeze" \
+	-u "$UPDATE_URL" \
+	-s "$HASH_URL" \
+	-r "${TRAVIS_COMMIT:0:7}" \
 	-g $CONFIG_DIR/files/grub.cfg \
 	-g $CONFIG_DIR/files/loopback.cfg \
 	-t grub-theme/Breeze \
