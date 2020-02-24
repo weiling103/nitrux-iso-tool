@@ -107,18 +107,19 @@ broadcom-sta-dkms
 dkms
 exfat-fuse
 exfat-utils
+firejail
+firejail-profiles
 go-mtpfs
 grub-common
 grub-efi-amd64-bin
 grub-efi-amd64-signed
 grub2-common
-firejail
-firejail-profiles
 i965-va-driver
 initramfs-tools
 initramfs-tools-bin
 initramfs-tools-core
 ipxe-qemu
+libc6
 libdrm-amdgpu1
 libdrm-intel1
 libdrm-radeon1
@@ -170,10 +171,10 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.10/linux-headers-5.4.10-050410_5.4.10-050410.202001091038_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.10/linux-headers-5.4.10-050410-generic_5.4.10-050410.202001091038_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.10/linux-image-unsigned-5.4.10-050410-generic_5.4.10-050410.202001091038_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.10/linux-modules-5.4.10-050410-generic_5.4.10-050410.202001091038_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-headers-5.4.21-050421_5.4.21-050421.202002191431_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-headers-5.4.21-050421-generic_5.4.21-050421.202002191431_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-image-unsigned-5.4.21-050421-generic_5.4.21-050421.202002191431_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-modules-5.4.21-050421-generic_5.4.21-050421.202002191431_amd64.deb
 '
 
 mkdir /latest_kernel
@@ -212,6 +213,16 @@ https://raw.githubusercontent.com/UriHerrera/storage/master/Files/navi10_sdma1.b
 https://raw.githubusercontent.com/UriHerrera/storage/master/Files/navi10_smc.bin
 https://raw.githubusercontent.com/UriHerrera/storage/master/Files/navi10_sos.bin
 https://raw.githubusercontent.com/UriHerrera/storage/master/Files/navi10_vcn.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_asd.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_ce.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_gpu_info.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_me.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_mec.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_mec2.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_pfp.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_rlc.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_sdma.bin
+https://raw.githubusercontent.com/UriHerrera/storage/master/Files/renoir_vcn.bin
 '
 
 mkdir /fw_files
@@ -220,12 +231,12 @@ for x in $fw; do
     wget -q -P /fw_files $x
 done
 
-mv /fw_files/vega20_ta.bin /lib/firmware/amdgpu/
-mv /fw_files/raven_kicker_rlc.bin /lib/firmware/amdgpu/
-mv /fw_files/navi10_*.bin /lib/firmware/amdgpu/
-mv /fw_files/bxt_huc_ver01_8_2893.bin /lib/firmware/i915/
+cp /fw_files/{vega20_ta.bin,raven_kicker_rlc.bin,navi10_*.bin,renoir_*.bin} /lib/firmware/amdgpu/
+cp /fw_files/bxt_huc_ver01_8_2893.bin /lib/firmware/i915/
 
 rm -r /fw_files
+
+ls -l /lib/firmware/amdgpu/
 
 
 # -- Add /Applications to $PATH.
@@ -250,6 +261,7 @@ printf "\n"
 APPS_SYS='
 https://github.com/Nitrux/znx/releases/download/continuous-master/znx-master-x86_64.AppImage
 https://raw.githubusercontent.com/UriHerrera/storage/master/AppImages/appimage-cli-tool-x86_64.AppImage
+https://raw.githubusercontent.com/UriHerrera/storage/master/AppImages/pnx-1.0.0-x86_64.AppImage
 https://raw.githubusercontent.com/UriHerrera/storage/master/Binaries/vmetal-free-amd64
 '
 
@@ -263,6 +275,7 @@ chmod +x /Applications/*
 
 mv /Applications/znx-master-x86_64.AppImage /Applications/znx
 mv /Applications/appimage-cli-tool-x86_64.AppImage /Applications/app
+mv /Applications/pnx-1.0.0-x86_64.AppImage /Applications/pnx
 mv /Applications/vmetal-free-amd64 /Applications/vmetal
 
 ls -l /Applications
@@ -284,6 +297,37 @@ printf "ADD MISC. FIXES."
 printf "\n"
 
 cp /configs/files/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
+
+
+# -- Workarounds for PNX.
+#FIXME These need to be fixed in PNX.
+
+printf "\n"
+printf "ADD WORKAROUNDS FOR PNX."
+printf "\n"
+
+mkdir -p /var/lib/pacman/
+mkdir -p /etc/pacman.d/
+mkdir -p /usr/share/pacman/keyrings
+
+cp /configs/files/pacman.conf /etc
+cp /configs/files/mirrorlist /etc/pacman.d
+cp /configs/other/pacman/* /usr/share/pacman/keyrings
+
+ln -sv /home/.pnx/usr/lib/dri /usr/lib/dri
+ln -sv /home/.pnx/usr/lib/pulseaudio /usr/lib/pulseaudio
+ln -sv /home/.pnx/usr/lib/gdk-pixbuf-2.0 /usr/lib/gdk-pixbuf-2.0
+ln -sv /home/.pnx/usr/lib/gs-plugins-13 /usr/lib/gs-plugins-13
+ln -sv /home/.pnx/usr/lib/liblmdb.so /usr/lib/liblmdb.so
+ln -sv /home/.pnx/usr/lib/systemd /usr/lib/systemd
+ln -sv /home/.pnx/usr/lib/samba /usr/lib/samba
+ln -sv /home/.pnx/usr/lib/girepository-1.0 /usr/lib/girepository-1.0
+ln -sv /home/.pnx/usr/share/tracker /usr/share/tracker
+ln -sv /home/.pnx/usr/lib/tracker-2.0 /usr/lib/tracker-2.0
+ln -sv /home/.pnx/usr/lib/WebKitNetworkProcess /usr/lib/WebKitNetworkProcess
+ln -sv /home/.pnx/usr/lib/epiphany /usr/lib/epiphany
+ln -sv /home/.pnx/usr/lib/opera /usr/lib/opera
+ln -sv /home/.pnx/usr/lib/firefox /usr/lib/firefox
 
 
 # -- Add vfio modules and files.
@@ -370,10 +414,7 @@ printf "DISABLE SYSTEMD SERVICES."
 printf "\n"
 
 systemctl mask avahi-daemon.service
-systemctl disable cupsd.service
-systemctl disable cupsd-browsed.service
-systemctl disable NetworkManager-wait-online.service
-systemctl disable keyboard-setup.service
+systemctl disable cupsd.service cupsd-browsed.service NetworkManager-wait-online.service keyboard-setup.service
 
 
 # -- Fix for broken udev rules (yes, it is broken by default).
@@ -388,8 +429,7 @@ sed -i 's/ACTION!="add", GOTO="libmtp_rules_end"/ACTION!="bind", ACTION!="add", 
 
 
 # -- Remove APT.
-# -- Update package index using cupt.
-#FIXME We probably need to provide our own cupt package which also does this.
+#FIXME This should be put in a package.
 
 printf "\n"
 printf "REMOVE APT."
@@ -415,14 +455,14 @@ printf "\n"
 printf "UPDATE INITRAMFS."
 printf "\n"
 
-find /lib/modules/5.4.10-050410-generic/ -iname "*.ko" -exec strip --strip-unneeded {} \;
+find /lib/modules/5.4.21-050421-generic/ -iname "*.ko" -exec strip --strip-unneeded {} \;
 cp /configs/files/initramfs.conf /etc/initramfs-tools/
 cp /configs/scripts/hook-scripts.sh /usr/share/initramfs-tools/hooks/
 cat /configs/scripts/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
 # cp /configs/scripts/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
 
 update-initramfs -u
-lsinitramfs /boot/initrd.img-5.4.10-050410-generic | grep vfio
+lsinitramfs /boot/initrd.img-5.4.21-050421-generic | grep vfio
 
 rm /bin/dummy.sh
 
