@@ -67,7 +67,7 @@ DESKTOP_PACKAGES='
 elementary-desktop
 '
 
-apt update
+apt update &> /dev/null
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ }
 apt -yy purge --remove gnome-software
@@ -81,10 +81,10 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-headers-5.3.13-050313_5.3.13-050313.201911240840_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-headers-5.3.13-050313-generic_5.3.13-050313.201911240840_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-image-unsigned-5.3.13-050313-generic_5.3.13-050313.201911240840_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.3.13/linux-modules-5.3.13-050313-generic_5.3.13-050313.201911240840_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-headers-5.4.21-050421_5.4.21-050421.202002191431_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-headers-5.4.21-050421-generic_5.4.21-050421.202002191431_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-image-unsigned-5.4.21-050421-generic_5.4.21-050421.202002191431_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.21/linux-modules-5.4.21-050421-generic_5.4.21-050421.202002191431_amd64.deb
 '
 
 mkdir latest_kernel
