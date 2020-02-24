@@ -2,21 +2,31 @@
 
 # -- Exit on errors.
 
-set -xe
+set -x
 
 # -- Update xorriso and grub.
 
 xorriso='
-http://mirrors.kernel.org/ubuntu/pool/universe/libi/libisoburn/xorriso_1.5.0-1build1_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/universe/libi/libisoburn/libisoburn1_1.5.0-1build1_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/universe/libb/libburn/libburn4_1.5.0-1_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/universe/libi/libisofs/libisofs6_1.5.0-1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/e/efivar/libefiboot1_37-2ubuntu2_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/e/efivar/libefivar1_37-2ubuntu2_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-9/gcc-9-base_9.2.1-25ubuntu1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-9/libgcc1_9.2.1-21ubuntu1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/glibc/libc-bin_2.30-0ubuntu3_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/glibc/libc6_2.30-0ubuntu3_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/glibc/locales_2.30-0ubuntu3_all.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub-common_2.04-1ubuntu16_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub-efi-amd64-bin_2.04-1ubuntu16_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub2-common_2.04-1ubuntu16_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub-pc-bin_2.04-1ubuntu16_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub-pc_2.04-1ubuntu16_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/main/n/ncurses/libtinfo6_6.1+20181013-2ubuntu2_amd64.deb
 http://mirrors.kernel.org/ubuntu/pool/main/r/readline/libreadline8_8.0-1_amd64.deb
 http://mirrors.kernel.org/ubuntu/pool/main/r/readline/readline-common_8.0-1_all.deb
-http://mirrors.kernel.org/ubuntu/pool/main/n/ncurses/libtinfo6_6.1+20181013-2ubuntu2_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub-efi-amd64-bin_2.02-2ubuntu8_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub-common_2.02-2ubuntu8_amd64.deb
-http://mirrors.kernel.org/ubuntu/pool/main/g/grub2/grub2-common_2.02-2ubuntu8_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/universe/libb/libburn/libburn4_1.5.0-1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/universe/libi/libisoburn/libisoburn1_1.5.0-1build1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/universe/libi/libisoburn/xorriso_1.5.0-1build1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/universe/libi/libisofs/libisofs6_1.5.0-1_amd64.deb
+http://mirrors.kernel.org/ubuntu/pool/universe/j/jigit/libjte1_1.21-1ubuntu1_amd64.deb
 '
 
 mkdir /latest_xorriso
@@ -81,13 +91,6 @@ mkdir -p $ISO_DIR/casper
 mksquashfs $BUILD_DIR $ISO_DIR/casper/filesystem.squashfs -comp gzip -no-progress -b 65536
 
 
-# -- Write relevant data to the image.
-
-echo "UPDATE_URL $UPDATE_URL" >> $ISO_DIR/.INFO
-echo "HASH_URL $HASH_URL" >> $ISO_DIR/.INFO
-echo "VERSION ${TRAVIS_COMMIT:0:7}" >> $ISO_DIR/.INFO
-
-
 # -- Generate the ISO image.
 
 wget -qO /bin/mkiso https://raw.githubusercontent.com/Nitrux/tools/master/mkiso
@@ -95,13 +98,18 @@ chmod +x /bin/mkiso
 
 git clone https://github.com/UriHerrera/elementary-grub-theme grub-theme
 
+
 mkiso \
 	-V "elementary" \
+	-b \
+	-e \
+	-u "$UPDATE_URL" \
+	-s "$HASH_URL" \
+	-r "${TRAVIS_COMMIT:0:7}" \
 	-g $CONFIG_DIR/files/grub.cfg \
 	-g $CONFIG_DIR/files/loopback.cfg \
 	-t grub-theme/elementary \
 	$ISO_DIR $OUTPUT_DIR/$IMAGE
-
 
 # -- Calculate the checksum.
 
