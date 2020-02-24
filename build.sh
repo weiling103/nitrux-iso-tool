@@ -90,6 +90,8 @@ git clone https://github.com/UriHerrera/breeze-grub-theme grub-theme
 
 mkiso \
 	-V "Breeze" \
+	-b \
+	-e \
 	-u "$UPDATE_URL" \
 	-s "$HASH_URL" \
 	-r "${TRAVIS_COMMIT:0:7}" \
