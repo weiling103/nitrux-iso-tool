@@ -36,7 +36,7 @@ printf "$x"
     wget -q -P /latest_xorriso $x
 done
 
-dpkg -iR /latest_xorriso/
+dpkg -iR --force-all /latest_xorriso/
 dpkg --configure -a
 rm -r /latest_xorriso
 
