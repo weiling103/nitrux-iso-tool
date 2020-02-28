@@ -53,6 +53,37 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1B69B2DA > /dev/null
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1118213C > /dev/null
 
 
+# -- Use sources.list.focal to install fuse3 and glib.
+#FIXME We need to provide these packages from a repository of ours.
+
+cp /configs/files/sources.list.focal /etc/apt/sources.list
+
+printf "\n"
+printf "INSTALLING FUSE3 AND GLIB."
+printf "\n"
+
+UPDATE_LIBC_FUSE3='
+fuse3
+gcc-10-base
+libc-bin
+libc-dev-bin
+libc6
+libc6-dev
+libfuse3-3
+libgcc-s1
+libgcc1
+linux-libc-dev
+locales
+'
+
+apt update &> /dev/null
+apt download ${UPDATE_LIBC_FUSE3//\\n/ } --no-install-recommends
+dpkg --force-all -i *.deb
+rm *.deb
+apt clean &> /dev/null
+apt autoclean &> /dev/null
+
+
 # -- Use sources.list.build to build ISO.
 
 cp /configs/files/sources.list.build /etc/apt/sources.list
