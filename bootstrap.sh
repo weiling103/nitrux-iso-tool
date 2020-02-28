@@ -102,6 +102,7 @@ nitrux-hardware-drivers-minimal
 '
 
 apt update &> /dev/null
+apt -yy --fix-broken install
 apt -yy upgrade
 apt -yy install ${DESKTOP_PACKAGES//\\n/ } --no-install-recommends
 apt -yy --fix-broken install &> /dev/null
