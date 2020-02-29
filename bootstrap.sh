@@ -136,6 +136,8 @@ broadcom-sta-dkms
 dkms
 exfat-fuse
 exfat-utils
+firejail
+firejail-profiles
 go-mtpfs
 grub-common
 grub-efi-amd64-bin
@@ -207,9 +209,8 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-headers-5.4.23-050423_5.4.23-050423.202002281329_all.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-headers-5.4.23-050423-generic_5.4.23-050423.202002281329_amd64.deb
-https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-image-unsigned-5.4.23-050423-generic_5.4.23-050423.202002281329_amd64.deb
+http://deb.xanmod.org/pool/main/l/linux-5.4.22-xanmod12/linux-headers-5.4.22-xanmod12_1.200224_amd64.deb
+http://deb.xanmod.org/pool/main/l/linux-5.4.22-xanmod12/linux-image-5.4.22-xanmod12_1.200224_amd64.deb
 https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-modules-5.4.23-050423-generic_5.4.23-050423.202002281329_amd64.deb
 '
 
