@@ -198,7 +198,7 @@ apt autoclean &> /dev/null
 
 
 # -- Install the kernel.
-#FIXME This should be put in our repository.
+#FIXME This should be synced to our repository.
 
 printf "\n"
 printf "INSTALLING KERNEL."
@@ -265,15 +265,16 @@ https://raw.githubusercontent.com/UriHerrera/storage/master/Files/kernel_modules
 
 mkdir /fw_files
 
+mkdir -p /lib/modules/5.4.23-050423-generic/kernel/drivers/vfio/pci
+
 for x in $fw; do
     wget -q -P /fw_files $x
 done
 
 cp /fw_files/{vega20_ta.bin,raven_kicker_rlc.bin,navi10_*.bin,renoir_*.bin} /lib/firmware/amdgpu/
 cp /fw_files/bxt_huc_ver01_8_2893.bin /lib/firmware/i915/
-cp /fw_files/{vfio.ko,vfio_iommu_type1.ko,vfio_virqfd.ko} /usr/lib/modules/5.4.23-050423-generic/kernel/drivers/vfio/
-mkdir -p /usr/lib/modules/5.4.23-050423-generic/kernel/drivers/vfio/pci
-cp /fw_files/vfio-pci.ko /usr/lib/modules/5.4.23-050423-generic/kernel/drivers/vfio/pci
+cp /fw_files/{vfio.ko,vfio_iommu_type1.ko,vfio_virqfd.ko} /lib/modules/5.4.23-050423-generic/kernel/drivers/vfio/
+cp /fw_files/vfio-pci.ko /lib/modules/5.4.23-050423-generic/kernel/drivers/vfio/pci
 
 rm -r /fw_files
 
