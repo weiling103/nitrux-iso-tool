@@ -119,9 +119,6 @@ printf "\n"
 cp /configs/files/sources.list.eoan /etc/apt/sources.list
 
 ADD_BREW_PACKAGES='
-libc-dev-bin
-libc6-dev
-linux-libc-dev
 linuxbrew-wrapper
 '
 
@@ -139,8 +136,6 @@ broadcom-sta-dkms
 dkms
 exfat-fuse
 exfat-utils
-firejail
-firejail-profiles
 go-mtpfs
 grub-common
 grub-efi-amd64-bin
@@ -163,6 +158,7 @@ linux-firmware
 mesa-va-drivers
 mesa-vdpau-drivers
 mesa-vulkan-drivers
+mksh
 openssh-client
 openssl
 ovmf
@@ -183,16 +179,24 @@ xserver-xorg-video-intel
 xserver-xorg-video-qxl
 xserver-xorg-video-radeon
 xserver-xorg-video-vmware
+zsh
+'
+
+ADD_MISC_PACKAGES='
+libslirp0
+nsnake
 '
 
 apt update &> /dev/null
 apt -yy install ${UPGRADE_OS_PACKAGES//\\n/ } --only-upgrade --no-install-recommends
+apt -yy install ${ADD_MISC_PACKAGES//\\n/ } --no-install-recommends
 apt -yy --fix-broken install
 apt clean &> /dev/null
 apt autoclean &> /dev/null
 
 
 # -- No apt usage past this point. -- #
+#WARNING
 
 
 # -- Install the kernel.
@@ -323,12 +327,15 @@ cp /configs/files/appimage-providers.yaml /etc/
 
 
 # -- Add fix for https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/1638842.
+#FIXME These fixes should be included in a deb package downloaded to our repository.
 
 printf "\n"
 printf "ADD MISC. FIXES."
 printf "\n"
 
 cp /configs/files/10-globally-managed-devices.conf /etc/NetworkManager/conf.d/
+rm /usr/share/applications/htop.desktop /usr/share/applications/mc.desktop /usr/share/applications/mcedit.desktop /usr/share/applications/nsnake.desktop
+ln -sv /usr/games/nsnake /bin/nsnake
 
 
 # -- Workarounds for PNX.
@@ -487,14 +494,14 @@ printf "\n"
 printf "UPDATE INITRAMFS."
 printf "\n"
 
-find /lib/modules/5.4.21-050421-generic/ -iname "*.ko" -exec strip --strip-unneeded {} \;
+find /lib/modules/5.4.23-050423-generic/ -iname "*.ko" -exec strip --strip-unneeded {} \;
 cp /configs/files/initramfs.conf /etc/initramfs-tools/
 cp /configs/scripts/hook-scripts.sh /usr/share/initramfs-tools/hooks/
 cat /configs/scripts/persistence >> /usr/share/initramfs-tools/scripts/casper-bottom/05mountpoints_lupin
 # cp /configs/scripts/iso_scanner /usr/share/initramfs-tools/scripts/casper-premount/20iso_scan
 
 update-initramfs -u
-lsinitramfs /boot/initrd.img-5.4.21-050421-generic | grep vfio
+lsinitramfs /boot/initrd.img-5.4.23-050423-generic | grep vfio
 
 rm /bin/dummy.sh
 
