@@ -131,14 +131,13 @@ apt autoclean &> /dev/null
 cp /configs/files/sources.list.focal /etc/apt/sources.list
 
 UPGRADE_OS_PACKAGES='
-amd64-microcode
+
 broadcom-sta-dkms
 dkms
 exfat-fuse
 exfat-utils
 firejail
 firejail-profiles
-go-mtpfs
 grub-common
 grub-efi-amd64-bin
 grub-efi-amd64-signed
@@ -161,7 +160,6 @@ mesa-va-drivers
 mesa-vdpau-drivers
 mesa-vulkan-drivers
 mksh
-openssh-client
 openssl
 ovmf
 seabios
@@ -169,13 +167,11 @@ sudo
 thunderbolt-tools
 x11-session-utils
 xinit
-xserver-xorg
 xserver-xorg-core
 xserver-xorg-input-evdev
 xserver-xorg-input-libinput
 xserver-xorg-input-mouse
 xserver-xorg-input-synaptics
-xserver-xorg-input-wacom
 xserver-xorg-video-amdgpu
 xserver-xorg-video-intel
 xserver-xorg-video-qxl
@@ -209,8 +205,9 @@ printf "INSTALLING KERNEL."
 printf "\n"
 
 kfiles='
-http://deb.xanmod.org/pool/main/l/linux-5.4.22-xanmod12/linux-headers-5.4.22-xanmod12_1.200224_amd64.deb
-http://deb.xanmod.org/pool/main/l/linux-5.4.22-xanmod12/linux-image-5.4.22-xanmod12_1.200224_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-headers-5.4.23-050423_5.4.23-050423.202002281329_all.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-headers-5.4.23-050423-generic_5.4.23-050423.202002281329_amd64.deb
+https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-image-unsigned-5.4.23-050423-generic_5.4.23-050423.202002281329_amd64.deb
 https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.23/linux-modules-5.4.23-050423-generic_5.4.23-050423.202002281329_amd64.deb
 '
 
@@ -221,7 +218,7 @@ printf "$x"
     wget -q -P /latest_kernel $x
 done
 
-dpkg -iR /latest_kernel &> /dev/null
+dpkg -iR /latest_kernel
 dpkg --configure -a &> /dev/null
 rm -r /latest_kernel
 
